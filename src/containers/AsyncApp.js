@@ -2,11 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
-    selectSubreddit,
     fetchTasksIfNeeded,
-    invalidateSubreddit
+    invalidate
 } from '../actions'
-import Picker from '../components/Picker'
 import Tasks from '../components/Tasks'
 
 class AsyncApp extends Component {
@@ -17,39 +15,33 @@ class AsyncApp extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(fetchTasksIfNeeded(selectedSubreddit))
+        const { dispatch } = this.props
+        dispatch(fetchTasksIfNeeded())
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
-            const { dispatch, selectedSubreddit } = this.props
-            dispatch(fetchTasksIfNeeded(selectedSubreddit))
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
+    //         const { dispatch, selectedSubreddit } = this.props
+    //         dispatch(fetchTasksIfNeeded(selectedSubreddit))
+    //     }
+    // }
 
-    handleChange(nextSubreddit) {
-        this.props.dispatch(selectSubreddit(nextSubreddit))
-        this.props.dispatch(fetchTasksIfNeeded(nextSubreddit))
+    handleChange() {
+        this.props.dispatch(fetchTasksIfNeeded())
     }
 
     handleRefreshClick(e) {
         e.preventDefault()
 
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(invalidateSubreddit(selectedSubreddit))
-        dispatch(fetchTasksIfNeeded(selectedSubreddit))
+        const { dispatch } = this.props
+        dispatch(invalidate())
+        dispatch(fetchTasksIfNeeded())
     }
 
     render() {
-        const { selectedSubreddit, tasks, isFetching, lastUpdated } = this.props
+        const { tasks, isFetching, lastUpdated } = this.props
         return (
             <div>
-                <Picker
-                    value={selectedSubreddit}
-                    onChange={this.handleChange}
-                    options={['reactjs', 'frontend']}
-                />
                 <p>
                     {lastUpdated &&
                     <span>
@@ -73,7 +65,6 @@ class AsyncApp extends Component {
 }
 
 AsyncApp.propTypes = {
-    selectedSubreddit: PropTypes.string.isRequired,
     tasks: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
@@ -81,18 +72,13 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { selectedSubreddit, tasksBySubreddit } = state
     const {
         isFetching,
         lastUpdated,
         items: tasks
-    } = tasksBySubreddit[selectedSubreddit] || {
-        isFetching: true,
-        items: []
-    }
+    } = state
 
     return {
-        selectedSubreddit,
         tasks,
         isFetching,
         lastUpdated

@@ -1,19 +1,9 @@
-import { combineReducers } from 'redux'
+//import { combineReducers } from 'redux'
 import {
-    SELECT_SUBREDDIT,
-    INVALIDATE_SUBREDDIT,
-    REQUEST_POSTS,
-    RECEIVE_POSTS
+    INVALIDATE,
+    REQUEST_TASKS,
+    RECEIVE_TASKS
 } from './actions'
-
-function selectedSubreddit(state = 'reactjs', action) {
-    switch (action.type) {
-        case SELECT_SUBREDDIT:
-            return action.subreddit
-        default:
-            return state
-    }
-}
 
 function tasks(
     state = {
@@ -24,43 +14,29 @@ function tasks(
     action
 ) {
     switch (action.type) {
-        case INVALIDATE_SUBREDDIT:
+        case INVALIDATE:
             return Object.assign({}, state, {
                 didInvalidate: true
             })
-        case REQUEST_POSTS:
+        case REQUEST_TASKS:
             return Object.assign({}, state, {
                 isFetching: true,
                 didInvalidate: false
             })
-        case RECEIVE_POSTS:
+        case RECEIVE_TASKS:
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
                 items: action.tasks,
-                lastUpdated: action.receivedAt
             })
         default:
             return state
     }
 }
 
-function tasksBySubreddit(state = {}, action) {
-    switch (action.type) {
-        case INVALIDATE_SUBREDDIT:
-        case RECEIVE_POSTS:
-        case REQUEST_POSTS:
-            return Object.assign({}, state, {
-                [action.subreddit]: tasks(state[action.subreddit], action)
-            })
-        default:
-            return state
-    }
-}
-
-const rootReducer = combineReducers({
-    tasksBySubreddit,
-    selectedSubreddit
-})
+const rootReducer = tasks
+// const rootReducer = combineReducers({
+//     tasksBySubreddit,
+// })
 
 export default rootReducer
