@@ -5,6 +5,9 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
 export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
 
+const AUTH_HEADER = new Headers()
+AUTH_HEADER.append('Authorization', 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a')
+
 export function selectSubreddit(subreddit) {
     return {
         type: SELECT_SUBREDDIT,
@@ -19,50 +22,46 @@ export function invalidateSubreddit(subreddit) {
     }
 }
 
-function requestPosts(subreddit) {
+function requestTasks(subreddit) {
     return {
         type: REQUEST_POSTS,
         subreddit
     }
 }
 
-function receivePosts(subreddit, json) {
+function receiveTasks(subreddit, json) {
     return {
         type: RECEIVE_POSTS,
         subreddit,
-        //posts: json.data.children.map(child => child.data),
-        posts: json.results,
+        tasks: json.results,
         receivedAt: Date.now()
     }
 }
 
-function fetchPosts(subreddit) {
+function fetchTasks(subreddit) {
     return dispatch => {
-        dispatch(requestPosts(subreddit))
-        //return fetch(`https://www.reddit.com/r/${subreddit}.json`)
-        let reqHeaders = new Headers()
-        reqHeaders.append('Authorization', 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a')
-        return fetch(`https://api.storn.co/api/v1/task/`, { headers: reqHeaders })
+        dispatch(requestTasks(subreddit))
+        return fetch(`https://api.storn.co/api/v1/task/`, { headers: AUTH_HEADER })
             .then(response => response.json())
-            .then(json => dispatch(receivePosts(subreddit, json)))
+            .then(json => dispatch(receiveTasks(subreddit, json)))
     }
 }
 
-function shouldFetchPosts(state, subreddit) {
-    const posts = state.postsBySubreddit[subreddit]
-    if (!posts) {
+function shouldFetchTasks(state, subreddit) {
+    const tasks = state.tasksBySubreddit[subreddit]
+    if (!tasks) {
         return true
-    } else if (posts.isFetching) {
+    } else if (tasks.isFetching) {
         return false
     } else {
-        return posts.didInvalidate
+        return tasks.didInvalidate
     }
 }
 
-export function fetchPostsIfNeeded(subreddit) {
+export function fetchTasksIfNeeded(subreddit) {
     return (dispatch, getState) => {
-        if (shouldFetchPosts(getState(), subreddit)) {
-            return dispatch(fetchPosts(subreddit))
+        if (shouldFetchTasks(getState(), subreddit)) {
+            return dispatch(fetchTasks(subreddit))
         }
     }
 }

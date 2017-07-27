@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
     selectSubreddit,
-    fetchPostsIfNeeded,
+    fetchTasksIfNeeded,
     invalidateSubreddit
 } from '../actions'
 import Picker from '../components/Picker'
-import Posts from '../components/Posts'
+import Tasks from '../components/Tasks'
 
 class AsyncApp extends Component {
     constructor(props) {
@@ -18,19 +18,19 @@ class AsyncApp extends Component {
 
     componentDidMount() {
         const { dispatch, selectedSubreddit } = this.props
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        dispatch(fetchTasksIfNeeded(selectedSubreddit))
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
             const { dispatch, selectedSubreddit } = this.props
-            dispatch(fetchPostsIfNeeded(selectedSubreddit))
+            dispatch(fetchTasksIfNeeded(selectedSubreddit))
         }
     }
 
     handleChange(nextSubreddit) {
         this.props.dispatch(selectSubreddit(nextSubreddit))
-        this.props.dispatch(fetchPostsIfNeeded(nextSubreddit))
+        this.props.dispatch(fetchTasksIfNeeded(nextSubreddit))
     }
 
     handleRefreshClick(e) {
@@ -38,11 +38,11 @@ class AsyncApp extends Component {
 
         const { dispatch, selectedSubreddit } = this.props
         dispatch(invalidateSubreddit(selectedSubreddit))
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        dispatch(fetchTasksIfNeeded(selectedSubreddit))
     }
 
     render() {
-        const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
+        const { selectedSubreddit, tasks, isFetching, lastUpdated } = this.props
         return (
             <div>
                 <Picker
@@ -61,11 +61,11 @@ class AsyncApp extends Component {
                         Refresh
                     </a>}
                 </p>
-                {isFetching && posts.length === 0 && <h2>Loading...</h2>}
-                {!isFetching && posts.length === 0 && <h2>Empty.</h2>}
-                {posts.length > 0 &&
+                {isFetching && tasks.length === 0 && <h2>Loading...</h2>}
+                {!isFetching && tasks.length === 0 && <h2>Empty.</h2>}
+                {tasks.length > 0 &&
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                    <Posts posts={posts} />
+                    <Tasks tasks={tasks} />
                 </div>}
             </div>
         )
@@ -74,26 +74,26 @@ class AsyncApp extends Component {
 
 AsyncApp.propTypes = {
     selectedSubreddit: PropTypes.string.isRequired,
-    posts: PropTypes.array.isRequired,
+    tasks: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
-    const { selectedSubreddit, postsBySubreddit } = state
+    const { selectedSubreddit, tasksBySubreddit } = state
     const {
         isFetching,
         lastUpdated,
-        items: posts
-    } = postsBySubreddit[selectedSubreddit] || {
+        items: tasks
+    } = tasksBySubreddit[selectedSubreddit] || {
         isFetching: true,
         items: []
     }
 
     return {
         selectedSubreddit,
-        posts,
+        tasks,
         isFetching,
         lastUpdated
     }

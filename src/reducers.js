@@ -15,7 +15,7 @@ function selectedSubreddit(state = 'reactjs', action) {
     }
 }
 
-function posts(
+function tasks(
     state = {
         isFetching: false,
         didInvalidate: false,
@@ -37,7 +37,7 @@ function posts(
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
-                items: action.posts,
+                items: action.tasks,
                 lastUpdated: action.receivedAt
             })
         default:
@@ -45,13 +45,13 @@ function posts(
     }
 }
 
-function postsBySubreddit(state = {}, action) {
+function tasksBySubreddit(state = {}, action) {
     switch (action.type) {
         case INVALIDATE_SUBREDDIT:
         case RECEIVE_POSTS:
         case REQUEST_POSTS:
             return Object.assign({}, state, {
-                [action.subreddit]: posts(state[action.subreddit], action)
+                [action.subreddit]: tasks(state[action.subreddit], action)
             })
         default:
             return state
@@ -59,7 +59,7 @@ function postsBySubreddit(state = {}, action) {
 }
 
 const rootReducer = combineReducers({
-    postsBySubreddit,
+    tasksBySubreddit,
     selectedSubreddit
 })
 
