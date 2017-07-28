@@ -5,6 +5,7 @@ import {
     fetchTasksIfNeeded,
     invalidate
 } from '../actions'
+import AddTask from '../containers/AddTask'
 import Tasks from '../components/Tasks'
 
 class AsyncApp extends Component {
@@ -45,9 +46,8 @@ class AsyncApp extends Component {
                 <p>
                     {lastUpdated &&
                     <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                        {' '}
-            </span>}
+                        Last updated at {new Date(lastUpdated).toLocaleTimeString()}.{' '}
+                    </span>}
                     {!isFetching &&
                     <a href="#" onClick={this.handleRefreshClick}>
                         Refresh
@@ -57,6 +57,7 @@ class AsyncApp extends Component {
                 {!isFetching && tasks.length === 0 && <h2>Empty.</h2>}
                 {tasks.length > 0 &&
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+                    <AddTask />
                     <Tasks tasks={tasks} />
                 </div>}
             </div>

@@ -2,7 +2,8 @@
 import {
     INVALIDATE,
     REQUEST_TASKS,
-    RECEIVE_TASKS
+    RECEIVE_TASKS,
+    RECEIVE_TASK_CREATE
 } from './actions'
 
 function tasks(
@@ -28,6 +29,15 @@ function tasks(
                 isFetching: false,
                 didInvalidate: false,
                 items: action.tasks,
+            })
+        case RECEIVE_TASK_CREATE:                // note: we don't need to re-fetch all tasks here.  Just add the newly
+            return Object.assign({}, state, {    // created one to the top of the list
+                isFetching: false,
+                didInvalidate: false,
+                items: [
+                    action.task,
+                    ...state.items,
+                ],
             })
         default:
             return state
