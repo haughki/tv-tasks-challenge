@@ -5,19 +5,18 @@ export const REQUEST_TASK_CREATE = 'REQUEST_TASK_CREATE'
 export const RECEIVE_TASK_CREATE = 'RECEIVE_TASK_CREATE'
 export const REQUEST_TASKS = 'REQUEST_TASKS'
 export const RECEIVE_TASKS = 'RECEIVE_TASKS'
-export const INVALIDATE = 'INVALIDATE'
 
 const AUTH_HEADER = new Headers()
 AUTH_HEADER.append('Authorization', 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a')
 
 
-export function requestTaskCreate() {
+function requestTaskCreate() {
     return {
         type: REQUEST_TASK_CREATE,
     }
 }
 
-export function receiveTaskCreate(json) {
+function receiveTaskCreate(json) {
     return {
         type: RECEIVE_TASK_CREATE,
         task: json
@@ -42,12 +41,6 @@ export function createTask(text) {
     }
 }
 
-export function invalidate() {
-    return {
-        type: INVALIDATE
-    }
-}
-
 function requestTasks() {
     return {
         type: REQUEST_TASKS
@@ -61,7 +54,7 @@ function receiveTasks(json) {
     }
 }
 
-function fetchTasks() {
+export function fetchTasks() {
     return dispatch => {
         dispatch(requestTasks())
         return fetch("https://api.storn.co/api/v1/task/", { headers: AUTH_HEADER })
@@ -71,14 +64,7 @@ function fetchTasks() {
 }
 
 function shouldFetchTasks(state) {
-    const tasks = state.tasks
-    if (!tasks) {
-        return true
-    } else if (tasks.isFetching) {
-        return false
-    } else {
-        return tasks.didInvalidate
-    }
+    return !state.isFetching
 }
 
 export function fetchTasksIfNeeded() {
