@@ -5,9 +5,58 @@ export const REQUEST_TASK_CREATE = 'REQUEST_TASK_CREATE'
 export const RECEIVE_TASK_CREATE = 'RECEIVE_TASK_CREATE'
 export const REQUEST_TASKS = 'REQUEST_TASKS'
 export const RECEIVE_TASKS = 'RECEIVE_TASKS'
+export const REQUEST_TOGGLE_COMPLETE = 'REQUEST_TOGGLE_COMPLETE'
+export const RECEIVE_TOGGLE_COMPLETE = 'RECEIVE_TOGGLE_COMPLETE'
+export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
-const AUTH_HEADER = new Headers()
-AUTH_HEADER.append('Authorization', 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a')
+const AUTHORIZATION = Object.freeze({ 'Authorization' : 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a' })
+const CONTENT_TYPE = Object.freeze({"Content-Type": "application/json"})
+const TASK_API_URL = "https://api.storn.co/api/v1/task/"
+
+export function setVisibilityFilter(filter){
+    return {
+        type: SET_VISIBILITY_FILTER,
+        filter
+    }
+}
+
+function requestToggleComplete() {
+    return {
+        type: REQUEST_TOGGLE_COMPLETE
+    }
+}
+
+function receiveToggleComplete(json, old_priority) {
+    return {
+        type: RECEIVE_TOGGLE_COMPLETE,
+        task: json,
+        old_priority: old_priority
+    }
+}
+
+export function toggleTaskComplete(id, is_complete, priority){
+    let body = null
+    if (priority === null) {
+        body = JSON.stringify({
+            "is_complete": !is_complete,
+            "priority": 1
+        })
+    } else {
+        body = JSON.stringify({
+            "is_complete": !is_complete,
+        })
+    }
+    return dispatch => {
+        dispatch(requestToggleComplete())
+        return fetch(TASK_API_URL + "/" + id + "/", {
+            method: "PATCH",
+            headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
+            body: body
+        })
+            .then(response => response.json())
+            .then(json => dispatch(receiveToggleComplete(json, priority)))
+    }
+}
 
 
 function requestTaskCreate() {
@@ -24,12 +73,11 @@ function receiveTaskCreate(json) {
 }
 
 export function createTask(text) {
-    AUTH_HEADER.append("Content-Type", "application/json")
     return dispatch => {
         dispatch(requestTaskCreate())
-        return fetch("https://api.storn.co/api/v1/task/", {
+        return fetch(TASK_API_URL, {
             method: "POST",
-            headers: AUTH_HEADER,
+            headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
             body: JSON.stringify({
                 "name": uuidv4(),  // TODO not sure if we really need this?  Maybe duplicate names are just fine...
                 "is_complete": false,
@@ -57,7 +105,7 @@ function receiveTasks(json) {
 export function fetchTasks() {
     return dispatch => {
         dispatch(requestTasks())
-        return fetch("https://api.storn.co/api/v1/task/", { headers: AUTH_HEADER })
+        return fetch(TASK_API_URL, { headers: new Headers(AUTHORIZATION) })
             .then(response => response.json())
             .then(json => dispatch(receiveTasks(json)))
     }

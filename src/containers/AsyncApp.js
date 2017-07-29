@@ -5,8 +5,9 @@ import {
     fetchTasks,
     fetchTasksIfNeeded
 } from '../actions'
-import Tasks from '../components/Tasks'
+import VisibleTaskList from './VisibleTaskList'
 import AddTask from "./AddTask"
+import Footer from "../components/Footer"
 
 class AsyncApp extends Component {
     constructor(props) {
@@ -19,19 +20,21 @@ class AsyncApp extends Component {
         dispatch(fetchTasks())
     }
 
+    // TODO: do I still need this method?
     handleChange() {
         this.props.dispatch(fetchTasksIfNeeded())
     }
 
     render() {
-        const { tasks, isFetching } = this.props
+        const { isFetching } = this.props.tasks
 
         let ui = <h2>Loading...</h2>;
         if (!isFetching) {
             ui = (
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                     <AddTask />
-                    <Tasks tasks={tasks} />
+                    <VisibleTaskList />
+                    <Footer />
                 </div>
             )
         }
@@ -40,9 +43,20 @@ class AsyncApp extends Component {
     }
 }
 
+// TODO: clean up the proptypes for this component when things have stabilized.  The following gives you and idea.
+// TaskList.propTypes = {
+//     tasks: PropTypes.arrayOf(
+//         PropTypes.shape({
+//             id: PropTypes.number.isRequired,
+//             is_complete: PropTypes.bool.isRequired,
+//             description: PropTypes.string.isRequired
+//         }).isRequired
+//     ).isRequired,
+//     onTaskClick: PropTypes.func.isRequired
+// }
+
 AsyncApp.propTypes = {
-    tasks: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    tasks: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
