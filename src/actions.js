@@ -26,11 +26,10 @@ function requestToggleComplete() {
     }
 }
 
-function receiveToggleComplete(json, old_priority) {
+function receiveToggleComplete(json) {
     return {
         type: RECEIVE_TOGGLE_COMPLETE,
         task: json,
-        old_priority: old_priority
     }
 }
 
@@ -38,12 +37,12 @@ export function toggleTaskComplete(id, is_complete, priority){
     let body = null
     if (priority === null) {
         body = JSON.stringify({
-            "is_complete": !is_complete,
+            "is_complete": false,
             "priority": 1
         })
     } else {
         body = JSON.stringify({
-            "is_complete": !is_complete,
+            "is_complete": true,
         })
     }
     return dispatch => {
@@ -54,7 +53,7 @@ export function toggleTaskComplete(id, is_complete, priority){
             body: body
         })
             .then(response => response.json())
-            .then(json => dispatch(receiveToggleComplete(json, priority)))
+            .then(json => dispatch(receiveToggleComplete(json)))
     }
 }
 

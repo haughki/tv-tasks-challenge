@@ -19,7 +19,7 @@ TaskList.propTypes = {
             id: PropTypes.number.isRequired,
             is_complete: PropTypes.bool.isRequired,
             description: PropTypes.string.isRequired,
-            priority: PropTypes.number.isRequired
+            priority: PropTypes.number
         }).isRequired
     ).isRequired,
     onTaskClick: PropTypes.func.isRequired

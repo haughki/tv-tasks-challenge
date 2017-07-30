@@ -43,20 +43,45 @@ function tasks(
                 ],
             })
         case RECEIVE_TOGGLE_COMPLETE:
-            // let newTasks = []
-            // let tasks = state.tasks
-            // for (let i = 0)
-            // for (let i = action.old_priority - 1; i < tasks.length; i++) {
+            //if(action.task.is_complete) {
+                let newTasks = []
+                // loop until you find the completed task, copying state.tasks as you go
+                let i = 0
+                for (i; i < state.tasks.length; i++) {
+                    if (state.tasks[i].id === action.task.id) {
+                        // store index by breaking loop
+                        break;
+                    } else {
+                        newTasks[i] = state.tasks[i]
+                    }
+                }
+                // loop from completed index to last but one to find the next completed task (if there is one)
+                let insertedNewTask = false
+                for (i; i < state.tasks.length - 1; i++) {
+                    // if next task is not completed
+                    if (state.tasks[i + 1].is_complete === false) {
+                        // replace current 'empty space' with next
+                        newTasks[i] = state.tasks[i + 1]
+                    } else {
+                        // insert newly completed task into this space
+                        newTasks[i] = action.task
+                        insertedNewTask = true
+                        break
+                    }
+                }
+                i++  // either newly completed task + 1, or the last spot in the list (if there were no completed tasks)
+                if (insertedNewTask) {
+                    // copy the rest of the tasks
+                    for (i; i < state.tasks.length; i++) {
+                        newTasks[i] = state.tasks[i]
+                    }
+                } else { // there were no completed tasks
+                   newTasks[i] = action.task
+                }
+                return { isFetching : false, tasks: newTasks }
+            // } else {
             //
             // }
-            return Object.assign({}, state, {
-                isFetching: false,
-                tasks:  state.tasks.map(task =>                  // for each task
-                (task.id === action.task.id)                     // if the task id equals the action id
-                    ? {...task, is_complete: !task.is_complete}  // return everything in the task as is, except toggle is_complete
-                    : task                                       // else, just return the task
-                )
-            })
         default:
             return state
     }
