@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { toggleTaskComplete } from '../actions'
-import TaskList from '../components/TaskList'
 import { VISIBILITY } from '../common'
+import SortableTaskList from '../components/SortableTaskList'
 
 const getVisibleTasks = (tasks, filter) => {
     switch (filter) {
@@ -30,6 +30,6 @@ const mapDispatchToProps = dispatch => {
 const VisibleTaskList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(TaskList)
+)(SortableTaskList)
 
 export default VisibleTaskList

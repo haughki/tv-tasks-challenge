@@ -9,6 +9,7 @@ import VisibleTaskList from './VisibleTaskList'
 import AddTask from "./AddTask"
 import Footer from "../components/Footer"
 
+
 class AsyncApp extends Component {
     constructor(props) {
         super(props)
@@ -61,11 +62,7 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const {
-        isFetching,
-        tasks
-    } = state
-
+    const { isFetching, tasks } = state
     return {
         tasks,
         isFetching,
