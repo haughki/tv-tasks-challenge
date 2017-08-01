@@ -25,12 +25,16 @@ class SortableTaskList extends Component {
     }
 
     render() {
+        let updateState = function(obj) {
+            this.setState(obj)
+        }.bind(this)
         let childProps = { className: 'myClass1' };
         let listItems = this.state.tasks.map(function(task, i) {
             return (
                 <SortableListItem
                     key={task.id}  //id
-                    updateState={obj => this.setState(obj)}
+                    //updateState={obj => this.setState(obj)}
+                    updateState={updateState}
                     items={this.state.tasks} // all tasks?
                     draggingIndex={this.state.draggingIndex}
                     sortId={i}  //priority
