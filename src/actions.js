@@ -48,7 +48,7 @@ export function changeTaskOrder(id, priority) {
                 "priority": priority
             })})
             .then(response => response.json())
-            .then(json => dispatch(receiveOrderChange(json)))
+            .then(json => dispatch(fetchTasks()))
     }
 }
 

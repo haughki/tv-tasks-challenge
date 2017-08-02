@@ -5,7 +5,6 @@ import {
     REQUEST_TASKS,
     RECEIVE_TASKS,
     RECEIVE_TASK_CREATE,
-    RECEIVE_ORDER_CHANGE,
     RECEIVE_TOGGLE_COMPLETE
 } from './actions'
 
@@ -19,7 +18,7 @@ function visibilityFilter(state = VISIBILITY.SHOW_ALL, action) {
     }
 }
 
-function tasks(
+function tasksState(
     state = { isFetching : true,
               tasks: []
               },
@@ -43,42 +42,6 @@ function tasks(
                     ...state.tasks,
                 ],
             })
-        //case RECEIVE_ORDER_CHANGE:
-            // tests:
-            // move 0 to 0
-            // move last to last
-            // move 3 to 6
-            // move 6 to 3
-
-            // if newIndex === oldIndex
-                // log error, break
-            // if newIndex < oldIndex (moved something up in list)
-                // saved = task at newIndex
-                // array at newIndex gets moved task (updated one)
-                // loop from newIndex + 1 to end
-                    // if current index < oldIndex
-                        // temp = saved
-                        // saved = a[i]
-                        // a[i] = temp
-                    // else if current index == oldIndex
-                        // replace current index with saved task
-                    // else (current index > oldIndex)
-                        // increment curr priority + 1
-
-            // else (newIndex > oldIndex -- moved something down in list)
-                // loop from oldIndex + 1 to end
-                    // if current index < new index
-                        // move i to i - 1
-                    // else if current index == new index
-                        // replace current index with moved task (updated one)
-                    // else (current index is > new index
-                        // increment the priority + 1
-
-            // return Object.assign({}, state, {
-            //     isFetching: false,
-            //     tasks: newTasks,
-            // })
-
         case RECEIVE_TOGGLE_COMPLETE:
             //if(action.task.is_complete) {
                 let newTasks = []
@@ -127,10 +90,9 @@ function tasks(
     }
 }
 
-//const rootReducer = tasks
 const rootReducer = combineReducers({
     visibilityFilter,
-    tasks
+    tasksState
 })
 
 export default rootReducer

@@ -1,22 +1,28 @@
-import React, { Component } from 'react';
-import { sortable } from 'react-sortable';
+import React, {Component} from 'react';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
+const SortableItem = SortableElement(({value}) =>
+    <li>{value}</li>
+);
 
-class ListItem extends Component {
-    render() {
-        return (
-            <div {...this.props} className="task" style={{
-                textDecoration: this.props.children.is_complete ? 'line-through' : 'none'
-            }}><a href="#" onClick={e => {
-                e.preventDefault()
-                alert('click!')
-            }}>Link</a> {this.props.children.description}</div>
-        )
-    }
+let theMapper = function(value, index) {
+    let ind = index
+    let val = value
+    return (<SortableItem key={`item-${index}`} index={index} value={value.description} />)
 }
-
-
-let SortableListItem = sortable(ListItem);
+const SortableList = SortableContainer(({tasks}) => {
+    return (
+        <ul>
+            {
+                tasks.map((value, index) => theMapper(value, index)
+                    // (value, index) => (
+                    //     <SortableItem key={`item-${index}`} index={index} value={value} />
+                    // )
+                )
+            }
+        </ul>
+    );
+});
 
 class SortableTaskList extends Component {
     constructor(props) {
@@ -24,29 +30,18 @@ class SortableTaskList extends Component {
         this.state = props
     }
 
-    render() {
-        let updateState = function(obj) {
-            this.setState(obj)
-        }.bind(this)
-        let childProps = { className: 'myClass1' };
-        let listItems = this.state.tasks.map(function(task, i) {
-            return (
-                <SortableListItem
-                    key={task.id}  //id
-                    //updateState={obj => this.setState(obj)}
-                    updateState={updateState}
-                    items={this.state.tasks} // all tasks?
-                    draggingIndex={this.state.draggingIndex}
-                    sortId={i}  //priority
-                    outline="list"
-                    childProps={childProps}
-                >{task}</SortableListItem>  // description
-            );
-        }, this);
+    onSortEnd = ({oldIndex, newIndex}) => {
+        if (oldIndex === newIndex) {
+            return
+        }
+        let replacingPriority = this.state.tasks[newIndex].priority
+        this.state.dispatchChangeTaskOrder(this.state.tasks[oldIndex].id,
+            (oldIndex < newIndex) ? replacingPriority + 1 : replacingPriority)
+    }
 
-        return (
-            <div className="task-list">{listItems}</div>
-        )
+    render() {
+        this.state = this.props
+        return <SortableList tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
     }
 }
 

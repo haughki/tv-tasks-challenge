@@ -27,7 +27,7 @@ class AsyncApp extends Component {
     }
 
     render() {
-        const { isFetching } = this.props.tasks
+        const { isFetching } = this.props
 
         let ui = <h2>Loading...</h2>;
         if (!isFetching) {
@@ -62,7 +62,7 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, tasks } = state
+    const { isFetching, tasks } = state.tasksState
     return {
         tasks,
         isFetching,
