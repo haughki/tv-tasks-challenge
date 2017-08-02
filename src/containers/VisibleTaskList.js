@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { toggleTaskComplete } from '../actions'
+// import { toggleTaskComplete } from '../actions'
+import { changeTaskOrder } from '../actions'
 import { VISIBILITY } from '../common'
 import SortableComponent from '../components/NewSortableTaskList'
 
@@ -20,13 +21,22 @@ const mapStateToProps = state => {
     }
 }
 
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         onTaskClick: (id, is_complete, priority) => {
+//             dispatch(toggleTaskComplete(id, is_complete, priority))
+//         }
+//     }
+// }
+
 const mapDispatchToProps = dispatch => {
     return {
-        onTaskClick: (id, is_complete, priority) => {
-            dispatch(toggleTaskComplete(id, is_complete, priority))
+        dispatchChangeTaskOrder: (id, priority) => {
+            dispatch(changeTaskOrder(id, priority))
         }
     }
 }
+
 
 const VisibleTaskList = connect(
     mapStateToProps,
