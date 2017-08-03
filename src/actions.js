@@ -71,7 +71,7 @@ export function toggleTaskComplete(id, priority){
     if (priority === null) {
         body = JSON.stringify({
             "is_complete": false,
-            "priority": 1
+            "priority": undefined
         })
     } else {
         body = JSON.stringify({

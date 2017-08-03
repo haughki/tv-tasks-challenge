@@ -1,24 +1,33 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import {toggleTaskComplete} from "../actions"
 
-const Task = ({ description }) => (
-    <li style={{ textDecoration: 'line-through' }}>
-        {description}
-    </li>
+let Task = ({ task, dispatch }) => (
+    <div style={{ textDecoration: 'line-through' }}>
+        <input checked readOnly type='checkbox' onClick={e => {
+            e.preventDefault()
+            dispatch(toggleTaskComplete(task.id, task.priority))
+        }} />
+
+        {task.description}
+    </div>
 )
+Task = connect()(Task) // to get the dispatch from redux
 
 Task.propTypes = {
-    description: PropTypes.string.isRequired
+    task: PropTypes.object.isRequired,
 }
 
 const SimpleTaskList = ({ tasks }) => (
-    <ul>
+    <div>
         { tasks.map(task => (
-            <Task key={task.id} description={task.description} />
+            <Task key={task.id} task={task} />
         ))}
-    </ul>
+    </div>
 )
 
+// TODO: clean up propTypes
 SimpleTaskList.propTypes = {
     tasks: PropTypes.arrayOf(
         PropTypes.shape({
