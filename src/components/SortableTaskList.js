@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+import {toggleTaskComplete} from "../actions"
 
-const SortableItem = SortableElement(({value}) =>
-    <li>{value}</li>
+
+let SortableItem = SortableElement(({task, dispatch}) =>
+    <div className="task">
+        <input type='checkbox' onClick={e => {
+            e.preventDefault()
+            dispatch(toggleTaskComplete(task.id, task.priority))
+        }} />
+        {task.description}</div>
 );
+
+SortableItem = connect()(SortableItem) // to get the dispatch from redux
+
 
 const SortableList = SortableContainer(({tasks}) => {
     return (
-        <ul> { tasks.map((value, index) => (
-                <SortableItem key={`item-${index}`} index={index} value={value.description} />
+        <div> { tasks.map((task, index) => (
+             <SortableItem key={`item-${index}`} index={index} task={task} />
         ))}
-        </ul>
+        </div>
     );
 });
 
-class SortableTaskList extends Component {
+export class SortableTaskList extends Component {
     constructor(props) {
         super(props)
         this.state = props
@@ -32,9 +43,11 @@ class SortableTaskList extends Component {
     }
 
     render() {
-        this.state = this.props
+        this.state = this.props  // TODO: this works, but somehow doesn't seem right.  Am I breaking a state rule?
         return <SortableList tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
     }
 }
+
+
 
 export default SortableTaskList

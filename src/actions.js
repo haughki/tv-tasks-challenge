@@ -31,6 +31,7 @@ function requestOrderChange() {
     }
 }
 
+// TODO: clean up all of these defunct actions
 function receiveOrderChange(json) {
     return {
         type: RECEIVE_ORDER_CHANGE,
@@ -65,7 +66,7 @@ function receiveToggleComplete(json) {
     }
 }
 
-export function toggleTaskComplete(id, is_complete, priority){
+export function toggleTaskComplete(id, priority){
     let body = null
     if (priority === null) {
         body = JSON.stringify({
@@ -85,7 +86,7 @@ export function toggleTaskComplete(id, is_complete, priority){
             body: body
         })
             .then(response => response.json())
-            .then(json => dispatch(receiveToggleComplete(json)))
+            .then(json => dispatch(fetchTasks()))
     }
 }
 

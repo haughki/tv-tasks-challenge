@@ -5,7 +5,6 @@ import {
     SET_VISIBILITY_FILTER,
     REQUEST_TASKS,
     RECEIVE_TASKS,
-    RECEIVE_TOGGLE_COMPLETE
 } from '../actions'
 
 
@@ -37,8 +36,6 @@ function tasksState(
                 isFetching: false,
                 tasks: splitTasks(action.tasks)
             })
-        case RECEIVE_TOGGLE_COMPLETE:
-            break
         default:
             return state
     }
