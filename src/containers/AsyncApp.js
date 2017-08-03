@@ -5,7 +5,8 @@ import {
     fetchTasks,
     fetchTasksIfNeeded
 } from '../actions'
-import VisibleTaskList from './VisibleTaskList'
+import ToDoTaskList from './ToDoTaskList'
+import DoneTaskList from './DoneTaskList'
 import AddTask from "./AddTask"
 import Footer from "../components/Footer"
 
@@ -34,8 +35,9 @@ class AsyncApp extends Component {
             ui = (
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                     <AddTask />
-                    <VisibleTaskList />
+                    <ToDoTaskList />
                     <Footer />
+                    <DoneTaskList />
                 </div>
             )
         }
@@ -62,7 +64,7 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, tasks } = state.tasksState
+    const { isFetching, tasks } = state.tasksState  // TODO: do I really need to return tasks here?
     return {
         tasks,
         isFetching,

@@ -48,8 +48,8 @@ export function changeTaskOrder(id, priority) {
                 "priority": priority
             })})
             .then(response => response.json())
-            .then(json => dispatch(fetchTasks()))
-    }
+            .then(json => dispatch(fetchTasks()))  // to get the priorities right, we depend on the server.  So, we
+    }                                              // need to just re-fetch everything here.
 }
 
 function requestToggleComplete() {
@@ -116,8 +116,8 @@ export function createTask(text) {
                 "priority": 1      // TODO newly created task should have highest priortiy in list + 1, not necessarily 1
             })})
             .then(response => response.json())
-            .then(json => dispatch(receiveTaskCreate(json)))
-    }
+            .then(json => dispatch(fetchTasks()))  // to get the priorities right, we depend on the server.  So, we
+    }                                              // need to just re-fetch everything here.
 }
 
 function requestTasks() {
