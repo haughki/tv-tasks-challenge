@@ -1,1 +1,1 @@
-export const VISIBILITY = Object.freeze({ SHOW_ALL: "SHOW_ALL", SHOW_ACTIVE: 'SHOW_ACTIVE' })
+export const VISIBILITY = Object.freeze({ SHOW_COMPLETED: "SHOW_COMPLETED", HIDE_COMPLETED: 'HIDE_COMPLETED' })

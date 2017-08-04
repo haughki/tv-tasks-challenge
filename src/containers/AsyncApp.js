@@ -8,7 +8,8 @@ import {
 import ToDoTaskList from './ToDoTaskList'
 import DoneTaskList from './DoneTaskList'
 import AddTask from "./AddTask"
-import Footer from "../components/Footer"
+import FilterButton from "../containers/FilterButton"
+import { VISIBILITY } from "../common"
 
 
 class AsyncApp extends Component {
@@ -28,7 +29,7 @@ class AsyncApp extends Component {
     }
 
     render() {
-        const { isFetching } = this.props
+        const { taskVisibility, isFetching } = this.props
 
         let ui = <h2>Loading...</h2>;
         if (!isFetching) {
@@ -36,8 +37,9 @@ class AsyncApp extends Component {
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
                     <AddTask />
                     <ToDoTaskList />
-                    <Footer />
-                    <DoneTaskList />
+                    <FilterButton />
+                    { taskVisibility === VISIBILITY.SHOW_COMPLETED &&  // true && expression always evaluates to expression
+                    <DoneTaskList /> }
                 </div>
             )
         }
@@ -64,9 +66,10 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { isFetching, tasks } = state.tasksState  // TODO: do I really need to return tasks here?
+    const { taskVisibility } = state
+    const { isFetching } = state.tasksState
     return {
-        tasks,
+        taskVisibility,
         isFetching,
     }
 }

@@ -8,7 +8,7 @@ let SortableItem = SortableElement(({task, dispatch}) =>
     <div className="task">
         <input type='checkbox' onClick={e => {
             e.preventDefault()
-            dispatch(toggleTaskComplete(task.id, task.priority))
+            dispatch(toggleTaskComplete(task.id, task.priority))  // TODO: should be moved into container -- mapDispatchToProps
         }} />
         {task.description}</div>
 );

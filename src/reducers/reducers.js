@@ -8,7 +8,7 @@ import {
 } from '../actions'
 
 
-function visibilityFilter(state = VISIBILITY.SHOW_ALL, action) {
+function taskVisibility(state = VISIBILITY.HIDE_COMPLETED, action) {
     switch (action.type) {
         case SET_VISIBILITY_FILTER:
             return action.filter
@@ -42,7 +42,7 @@ function tasksState(
 }
 
 const rootReducer = combineReducers({
-    visibilityFilter,
+    taskVisibility,
     tasksState
 })
 

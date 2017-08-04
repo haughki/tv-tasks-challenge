@@ -5,9 +5,9 @@ import SimpleTaskList from '../components/SimpleTaskList'
 
 // const getVisibleTasks = (tasks, filter) => {
 //     switch (filter) {
-//         case VISIBILITY.SHOW_ALL:
+//         case VISIBILITY.SHOW_COMPLETED:
 //             return tasks
-//         case VISIBILITY.SHOW_ACTIVE:
+//         case VISIBILITY.HIDE_COMPLETED:
 //             return tasks.filter(t => !t.completed)
 //         // TODO default?
 //     }

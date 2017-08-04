@@ -18,7 +18,7 @@ const TASK_API_URL = "https://api.storn.co/api/v1/task/"
 
 const buildUrlWithId = (id => TASK_API_URL + "/" + id + "/")
 
-export function setVisibilityFilter(filter){
+export function setTaskVisibility(filter){
     return {
         type: SET_VISIBILITY_FILTER,
         filter

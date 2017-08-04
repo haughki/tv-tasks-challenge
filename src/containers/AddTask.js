@@ -7,8 +7,7 @@ let AddTask = ({ dispatch }) => {
 
     return (
         <div>
-            <form
-                onSubmit={e => {
+            <form onSubmit={e => {
                     e.preventDefault()
                     if (!input.value.trim()) {
                         return
@@ -17,11 +16,7 @@ let AddTask = ({ dispatch }) => {
                     input.value = ''
                 }}
             >
-                <input
-                    ref={node => {
-                        input = node
-                    }}
-                />
+                <input ref={node => { input = node }} />
                 <button type="submit">
                     Add Task
                 </button>
