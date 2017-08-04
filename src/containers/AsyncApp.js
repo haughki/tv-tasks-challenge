@@ -33,7 +33,7 @@ class AsyncApp extends Component {
         const { taskVisibility, disableUi } = this.props
 
         return (
-            <div style={{ opacity: disableUi ? 0.5 : 1 }}>
+            <div style={{ opacity: disableUi ? 0.5 : 1, padding: "30px" }}>
                 <AddTask disableUi={disableUi} />
                 <ToDoTaskList />
                 <VisibilityButton />

@@ -15,7 +15,7 @@ let AddTask = ({ disableUi, dispatch }) => {
     let newTask = undefined
 
     return (
-        <Form inline onSubmit={e => {
+        <Form style={{ padding: "20px 0px"}} inline onSubmit={e => {
             e.preventDefault()
             if (!newTask.value.trim()) {
                 return

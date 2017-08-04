@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/lib/Button';
 
 const CompletedButton = ({ disableUi, text, onClick }) => {
     return (
-        <Button disabled={disableUi} onClick={e => {
+        <Button style={{ margin: "20px 0px"}} disabled={disableUi} onClick={e => {
             e.preventDefault()
             let taskVisibility = (text === "HIDE COMPLETED TASKS") ? VISIBILITY.HIDE_COMPLETED : VISIBILITY.SHOW_COMPLETED
             onClick(taskVisibility)
