@@ -7,6 +7,7 @@ import Button from '../components/Button'
 const mapStateToProps = (state) => {
     return {
         text: state.taskVisibility === VISIBILITY.SHOW_COMPLETED ? "HIDE COMPLETED TASKS" : "SHOW COMPLETED TASKS",
+        disableUi: state.tasksState.disableUi
     }
 }
 

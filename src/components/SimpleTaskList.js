@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {toggleTaskComplete} from "../actions"
 
-let Task = ({ task, dispatch }) => (
+let Task = ({ disableUi, task, dispatch }) => (
     <div style={{ textDecoration: 'line-through' }}>
-        <input checked readOnly type='checkbox' onClick={e => {
+        <input disabled={disableUi} checked readOnly type='checkbox' onClick={e => {
             e.preventDefault()
             dispatch(toggleTaskComplete(task.id, task.priority))  // TODO: should be moved into container -- mapDispatchToProps
         }} />
@@ -19,10 +19,10 @@ Task.propTypes = {
     task: PropTypes.object.isRequired,
 }
 
-const SimpleTaskList = ({ tasks }) => (
+const SimpleTaskList = ({ disableUi, tasks }) => (
     <div>
         { tasks.map(task => (
-            <Task key={task.id} task={task} />
+            <Task key={task.id} disableUi={disableUi} task={task} />
         ))}
     </div>
 )

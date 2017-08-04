@@ -4,9 +4,9 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {toggleTaskComplete} from "../actions"
 
 
-let SortableItem = SortableElement(({task, dispatch}) =>
+let SortableItem = SortableElement(({disableUi, task, dispatch}) =>
     <div className="task">
-        <input type='checkbox' onClick={e => {
+        <input disabled={disableUi} type='checkbox' onClick={e => {
             e.preventDefault()
             dispatch(toggleTaskComplete(task.id, task.priority))  // TODO: should be moved into container -- mapDispatchToProps
         }} />
@@ -16,10 +16,10 @@ let SortableItem = SortableElement(({task, dispatch}) =>
 SortableItem = connect()(SortableItem) // to get the dispatch from redux
 
 
-const SortableList = SortableContainer(({tasks}) => {
+const SortableList = SortableContainer(({disableUi, tasks}) => {
     return (
         <div> { tasks.map((task, index) => (
-             <SortableItem key={`item-${index}`} index={index} task={task} />
+             <SortableItem key={`item-${index}`} disabled={disableUi} disableUi={disableUi} index={index} task={task} />
         ))}
         </div>
     );
@@ -32,8 +32,7 @@ export class SortableTaskList extends Component {
         this.onSortEnd = this.onSortEnd.bind(this);
     }
 
-    //onSortEnd = ({oldIndex, newIndex}) => {  // TODO: I feel like the Babel transpiler was complaining about this...?
-    onSortEnd({oldIndex, newIndex}) {          // TODO: note the .bind in the ctor.  Roll back?
+    onSortEnd({oldIndex, newIndex}) {
         if (oldIndex === newIndex)
             return
 
@@ -44,7 +43,7 @@ export class SortableTaskList extends Component {
 
     render() {
         this.state = this.props  // TODO: this works, but somehow doesn't seem right.  Am I breaking a state rule?
-        return <SortableList tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
+        return <SortableList disableUi={this.state.disableUi} tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
     }
 }
 

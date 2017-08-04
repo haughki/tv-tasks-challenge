@@ -1,22 +1,12 @@
 import { connect } from 'react-redux'
 import { changeTaskOrder } from '../actions'
-import { VISIBILITY } from '../common'
 import SortableTaskList from '../components/SortableTaskList'
 
 
-// const getVisibleTasks = (tasks, filter) => {
-//     switch (filter) {
-//         case VISIBILITY.SHOW_COMPLETED:
-//             return tasks
-//         case VISIBILITY.HIDE_COMPLETED:
-//             return tasks.filter(t => !t.completed)
-//         // TODO default?
-//     }
-// }
-
 const mapStateToProps = state => {
     return {
-        tasks: state.tasksState.tasks.todo
+        tasks: state.tasksState.tasks.todo,
+        disableUi: state.tasksState.disableUi
     }
 }
 

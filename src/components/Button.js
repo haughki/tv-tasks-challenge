@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {VISIBILITY} from "../common"
 
-const Button = ({ text, onClick }) => {
+const Button = ({ disableUi, text, onClick }) => {
     return (
         <form>
-            <input type="button" value={text} onClick={e => {
+            <input disabled={disableUi} type="button" value={text} onClick={e => {
                 e.preventDefault()
                 let taskVisibility = (text === "HIDE COMPLETED TASKS") ? VISIBILITY.HIDE_COMPLETED : VISIBILITY.SHOW_COMPLETED
                 onClick(taskVisibility)

@@ -3,8 +3,8 @@ import { VISIBILITY } from "../common"
 import { splitTasks } from "./helpers"
 import {
     SET_VISIBILITY_FILTER,
-    REQUEST_TASKS,
     RECEIVE_TASKS,
+    DISABLE_UI,
 } from '../actions'
 
 
@@ -18,7 +18,7 @@ function taskVisibility(state = VISIBILITY.HIDE_COMPLETED, action) {
 }
 
 function tasksState(
-    state = { isFetching : true,
+    state = { disableUi : true,
               tasks: {
                   done: [],
                   todo: []
@@ -27,13 +27,13 @@ function tasksState(
     action
 ) {
     switch (action.type) {
-        case REQUEST_TASKS:
+        case DISABLE_UI:
             return Object.assign({}, state, {
-                isFetching: true,
+                disableUi: true,
             })
         case RECEIVE_TASKS:
             return Object.assign({}, state, {
-                isFetching: false,
+                disableUi: false,
                 tasks: splitTasks(action.tasks)
             })
         default:

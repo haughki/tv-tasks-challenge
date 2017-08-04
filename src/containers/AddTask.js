@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { createTask } from '../actions'
 
-let AddTask = ({ dispatch }) => {
+let AddTask = ({ disableUi, dispatch }) => {
     let input
 
     return (
@@ -16,7 +16,7 @@ let AddTask = ({ dispatch }) => {
                     input.value = ''
                 }}
             >
-                <input ref={node => { input = node }} />
+                <input disabled={disableUi} ref={node => { input = node }} />
                 <button type="submit">
                     Add Task
                 </button>
@@ -24,6 +24,7 @@ let AddTask = ({ dispatch }) => {
         </div>
     )
 }
-AddTask = connect()(AddTask)
+AddTask = connect()(AddTask)  // TODO: is this ok?  Should I use a container middle-man instead?
+                              // TODO: this gives me 'dispatch'.
 
 export default AddTask

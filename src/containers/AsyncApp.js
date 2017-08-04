@@ -29,22 +29,17 @@ class AsyncApp extends Component {
     }
 
     render() {
-        const { taskVisibility, isFetching } = this.props
+        const { taskVisibility, disableUi } = this.props
 
-        let ui = <h2>Loading...</h2>;
-        if (!isFetching) {
-            ui = (
-                <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                    <AddTask />
-                    <ToDoTaskList />
-                    <FilterButton />
-                    { taskVisibility === VISIBILITY.SHOW_COMPLETED &&  // true && expression always evaluates to expression
-                    <DoneTaskList /> }
-                </div>
-            )
-        }
-
-        return ui
+        return (
+            <div style={{ opacity: disableUi ? 0.5 : 1 }}>
+                <AddTask disableUi={disableUi} />
+                <ToDoTaskList />
+                <FilterButton />
+                { taskVisibility === VISIBILITY.SHOW_COMPLETED &&  // true && expression always evaluates to expression
+                <DoneTaskList /> }
+            </div>
+        )
     }
 }
 
@@ -60,17 +55,17 @@ class AsyncApp extends Component {
 //     onTaskClick: PropTypes.func.isRequired
 // }
 
-AsyncApp.propTypes = {
-    tasks: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
-}
+// AsyncApp.propTypes = {
+//     tasks: PropTypes.object.isRequired,
+//     dispatch: PropTypes.func.isRequired
+// }
 
 function mapStateToProps(state) {
     const { taskVisibility } = state
-    const { isFetching } = state.tasksState
+    const { disableUi } = state.tasksState
     return {
         taskVisibility,
-        isFetching,
+        disableUi,
     }
 }
 

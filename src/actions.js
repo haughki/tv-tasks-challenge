@@ -1,14 +1,13 @@
 import fetch from 'isomorphic-fetch'
 import uuidv4 from 'uuid/v4'
 
-export const REQUEST_TASK_CREATE = 'REQUEST_TASK_CREATE'
-export const RECEIVE_TASK_CREATE = 'RECEIVE_TASK_CREATE'
+
 export const REQUEST_TASKS = 'REQUEST_TASKS'
 export const RECEIVE_TASKS = 'RECEIVE_TASKS'
-export const REQUEST_TOGGLE_COMPLETE = 'REQUEST_TOGGLE_COMPLETE'
-export const RECEIVE_TOGGLE_COMPLETE = 'RECEIVE_TOGGLE_COMPLETE'
-export const REQUEST_ORDER_CHANGE = 'REQUEST_ORDER_CHANGE'
-export const RECEIVE_ORDER_CHANGE = 'RECEIVE_ORDER_CHANGE'
+// export const REQUEST_TASK_CREATE = 'REQUEST_TASK_CREATE'
+// export const REQUEST_TOGGLE_COMPLETE = 'REQUEST_TOGGLE_COMPLETE'
+// export const REQUEST_ORDER_CHANGE = 'REQUEST_ORDER_CHANGE'
+export const DISABLE_UI = 'DISABLE_UI'
 
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
@@ -25,23 +24,15 @@ export function setTaskVisibility(filter){
     }
 }
 
-function requestOrderChange() {
+function disableUi() {
     return {
-        type: REQUEST_ORDER_CHANGE
-    }
-}
-
-// TODO: clean up all of these defunct actions
-function receiveOrderChange(json) {
-    return {
-        type: RECEIVE_ORDER_CHANGE,
-        task: json,
+        type: DISABLE_UI
     }
 }
 
 export function changeTaskOrder(id, priority) {
     return dispatch => {
-        dispatch(requestOrderChange())
+        dispatch(disableUi())
         return fetch(buildUrlWithId(id), {
             method: "PATCH",
             headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
@@ -51,19 +42,6 @@ export function changeTaskOrder(id, priority) {
             .then(response => response.json())
             .then(json => dispatch(fetchTasks()))  // to get the priorities right, we depend on the server.  So, we
     }                                              // need to just re-fetch everything here.
-}
-
-function requestToggleComplete() {
-    return {
-        type: REQUEST_TOGGLE_COMPLETE
-    }
-}
-
-function receiveToggleComplete(json) {
-    return {
-        type: RECEIVE_TOGGLE_COMPLETE,
-        task: json,
-    }
 }
 
 export function toggleTaskComplete(id, priority){
@@ -79,7 +57,7 @@ export function toggleTaskComplete(id, priority){
         })
     }
     return dispatch => {
-        dispatch(requestToggleComplete())
+        dispatch(disableUi())
         return fetch(buildUrlWithId(id), {
             method: "PATCH",
             headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
@@ -90,23 +68,9 @@ export function toggleTaskComplete(id, priority){
     }
 }
 
-
-function requestTaskCreate() {
-    return {
-        type: REQUEST_TASK_CREATE,
-    }
-}
-
-function receiveTaskCreate(json) {
-    return {
-        type: RECEIVE_TASK_CREATE,
-        task: json
-    }
-}
-
 export function createTask(text) {
     return dispatch => {
-        dispatch(requestTaskCreate())
+        dispatch(disableUi())
         return fetch(TASK_API_URL, {
             method: "POST",
             headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
@@ -121,12 +85,6 @@ export function createTask(text) {
     }                                              // need to just re-fetch everything here.
 }
 
-function requestTasks() {
-    return {
-        type: REQUEST_TASKS
-    }
-}
-
 function receiveTasks(json) {
     return {
         type: RECEIVE_TASKS,
@@ -136,7 +94,7 @@ function receiveTasks(json) {
 
 export function fetchTasks() {
     return dispatch => {
-        dispatch(requestTasks())
+        dispatch(disableUi())
         return fetch(TASK_API_URL, { headers: new Headers(AUTHORIZATION) })
             .then(response => response.json())
             .then(json => dispatch(receiveTasks(json)))
@@ -144,7 +102,7 @@ export function fetchTasks() {
 }
 
 function shouldFetchTasks(state) {
-    return !state.isFetching
+    return !state.tasksState.disableUi
 }
 
 export function fetchTasksIfNeeded() {
