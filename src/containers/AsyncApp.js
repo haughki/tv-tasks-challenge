@@ -8,8 +8,9 @@ import {
 import ToDoTaskList from './ToDoTaskList'
 import DoneTaskList from './DoneTaskList'
 import AddTask from "./AddTask"
-import FilterButton from "../containers/FilterButton"
+import VisibilityButton from "./VisibilityButton"
 import { VISIBILITY } from "../common"
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 class AsyncApp extends Component {
@@ -35,7 +36,7 @@ class AsyncApp extends Component {
             <div style={{ opacity: disableUi ? 0.5 : 1 }}>
                 <AddTask disableUi={disableUi} />
                 <ToDoTaskList />
-                <FilterButton />
+                <VisibilityButton />
                 { taskVisibility === VISIBILITY.SHOW_COMPLETED &&  // true && expression always evaluates to expression
                 <DoneTaskList /> }
             </div>

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { VISIBILITY } from "../common"
 import { setTaskVisibility } from '../actions'
-import Button from '../components/Button'
+import CompletedButton from '../components/CompletedButton'
 
 
 const mapStateToProps = (state) => {
@@ -19,9 +19,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const FilterButton = connect(
+const VisibilityButton = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Button)
+)(CompletedButton)
 
-export default FilterButton
+export default VisibilityButton
