@@ -1,21 +1,18 @@
 import fetch from 'isomorphic-fetch'
 import uuidv4 from 'uuid/v4'
+import {store} from './containers/Root'  // TODO: is this a good idea?  Do I need to do this just for dispatch?
 
-
-export const REQUEST_TASKS = 'REQUEST_TASKS'
 export const RECEIVE_TASKS = 'RECEIVE_TASKS'
-// export const REQUEST_TASK_CREATE = 'REQUEST_TASK_CREATE'
-// export const REQUEST_TOGGLE_COMPLETE = 'REQUEST_TOGGLE_COMPLETE'
-// export const REQUEST_ORDER_CHANGE = 'REQUEST_ORDER_CHANGE'
-export const DISABLE_UI = 'DISABLE_UI'
-
+export const DISABLE_UI = 'DISABLE_UI'  // happens during any ajax event TODO: rename?
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
 const AUTHORIZATION = Object.freeze({ 'Authorization' : 'Token 60d6df2d8a5b79de91fa742d66cff90e67a3ed5a' })
 const CONTENT_TYPE = Object.freeze({"Content-Type": "application/json"})
 const TASK_API_URL = "https://api.storn.co/api/v1/task/"
 
-const buildUrlWithId = (id => TASK_API_URL + "/" + id + "/")
+const buildUrlWithId = (id => TASK_API_URL + id + "/")
+
+
 
 export function setTaskVisibility(filter){
     return {
@@ -39,9 +36,8 @@ export function changeTaskOrder(id, priority) {
             body: JSON.stringify({
                 "priority": priority
             })})
-            .then(response => response.json())
-            .then(json => dispatch(fetchTasks()))  // to get the priorities right, we depend on the server.  So, we
-    }                                              // need to just re-fetch everything here.
+            .then(handleResponse)
+    }
 }
 
 export function toggleTaskComplete(id, priority){
@@ -63,8 +59,7 @@ export function toggleTaskComplete(id, priority){
             headers: new Headers(Object.assign({}, AUTHORIZATION, CONTENT_TYPE)),
             body: body
         })
-            .then(response => response.json())
-            .then(json => dispatch(fetchTasks()))
+            .then(handleResponse)
     }
 }
 
@@ -80,9 +75,23 @@ export function createTask(text) {
                 "description": text,
                 "priority": 1      // TODO newly created task should have highest priortiy in list + 1, not necessarily 1
             })})
-            .then(response => response.json())
-            .then(json => dispatch(fetchTasks()))  // to get the priorities right, we depend on the server.  So, we
+            .then(handleResponse)                  // to get the priorities right, we depend on the server.  So, we
     }                                              // need to just re-fetch everything here.
+}
+
+function handleResponse(response) {
+    if (response.ok)
+        store.dispatch(fetchTasks())  // TODO: do I really need store here to access dispatch??
+}
+
+export function deleteTask(id) {
+    return dispatch => {
+        dispatch(disableUi())
+        return fetch(buildUrlWithId(id), {
+            method: "DELETE",
+            headers: new Headers(AUTHORIZATION)
+        }).then(handleResponse)
+    }
 }
 
 function receiveTasks(json) {

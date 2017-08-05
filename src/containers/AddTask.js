@@ -1,21 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createTask } from '../actions'
-
-
-import Button from 'react-bootstrap/lib/Button';
 import Form from 'react-bootstrap/lib/Form';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-
 
 
 let AddTask = ({ disableUi, dispatch }) => {
     let newTask = undefined
 
     return (
-        <Form style={{ padding: "20px 0px"}} inline onSubmit={e => {
+        <Form style={{ padding: "20px 0px" }} inline onSubmit={e => {
             e.preventDefault()
             if (!newTask.value.trim()) {
                 return
@@ -24,14 +19,12 @@ let AddTask = ({ disableUi, dispatch }) => {
             newTask.value = ''
         }}>
             {' '}
-            <FormGroup controlId="formInlineEmail">
+            <FormGroup controlId="formInlineEmail" style={{ width:"100%" }}>
                 {' '}
-                <FormControl disabled={disableUi} inputRef={textInput => { newTask = textInput }} placeholder="Add new task..." />
+                <FormControl style={{ backgroundColor: "MidnightBlue", color: "white", width:"100%"}}
+                             disabled={disableUi} inputRef={textInput => { newTask = textInput }}
+                             placeholder="+ Add new task, hit enter..." />
             </FormGroup>
-            {' '}
-            <Button disabled={disableUi} type="submit">
-                Add Task
-            </Button>
         </Form>
     )
 }
