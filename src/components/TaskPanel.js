@@ -9,7 +9,7 @@ import edit from '../img/edit.PNG'
 
 let TaskPanel = ({ dispatch, childClass, disableUi, task, checked }) => (
     <div className="panel panel-default" style={{ marginBottom: '0px' }} >
-        <div className={`panel-body ${childClass}`} style={{ padding: '5px 15px' }} onDoubleClick={ e => {
+        <div className={`panel-body ${childClass}`} style={{ padding: '5px 10px 5px 30px' }} onDoubleClick={ e => {
             e.preventDefault()
             alert("you double clicked the task -- this could launch edit modal") }}>
             <div className="checkbox" style={{ marginTop: '0px', marginBottom: '0px' }}>

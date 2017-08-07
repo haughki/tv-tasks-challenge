@@ -66,15 +66,14 @@ class TaskEditModal extends Component {
 
         return (
             <div>
-                <p>Click to get the full Modal experience!</p>
 
-                <Button
-                    bsStyle="primary"
-                    bsSize="large"
-                    onClick={this.open}
-                >
-                    Launch demo modal
-                </Button>
+                {/*<Button*/}
+                    {/*bsStyle="primary"*/}
+                    {/*bsSize="large"*/}
+                    {/*onClick={this.open}*/}
+                {/*>*/}
+                    {/*Launch demo modal*/}
+                {/*</Button>*/}
 
                 <Modal show={this.state.showModal} onHide={this.close}>
                     <form onSubmit={e => {
