@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import TaskPanel from './TaskPanel'
 
 

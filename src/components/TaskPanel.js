@@ -27,7 +27,7 @@ let TaskPanel = ({ dispatch, childClass, disableUi, task, checked }) => (
                 dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
             }} />
 
-            <input style={{float:"right", paddingRight: "10px"}} type="image" src={edit} alt="edit" onClick={e => {
+            <input style={{float:"left", paddingRight: "10px"}} type="image" src={edit} alt="edit" onClick={e => {
                 e.preventDefault()
                 alert("You clicked edit.")
                 //dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
