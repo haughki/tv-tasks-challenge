@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {toggleTaskComplete, deleteTask} from "../actions"
 import '../index.css'
-import trashCan1 from '../img/trashCan1.png'
+import trashCan from '../img/trashCan.png'
 import edit from '../img/edit.PNG'
 
 
@@ -21,7 +21,7 @@ let TaskPanel = ({ dispatch, childClass, disableUi, task, checked }) => (
             {task.description}
 
 
-            <input style={{float:"right", paddingLeft: "10px"}} type="image" src={trashCan1} alt="delete" onClick={e => {
+            <input style={{float:"right", paddingLeft: "10px"}} type="image" src={trashCan} alt="delete" onClick={e => {
                 e.preventDefault()
 
                 dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
