@@ -23,7 +23,7 @@ let AddTask = ({ disableUi, dispatch }) => {
                 {' '}
                 <FormControl style={{ backgroundColor: "MidnightBlue", color: "white", width:"100%"}}
                              disabled={disableUi} inputRef={textInput => { newTask = textInput }}
-                             placeholder="+ Add new task, hit enter..." />
+                             placeholder="+ To add a new task, type the task here, then hit enter..." />
             </FormGroup>
         </Form>
     )
