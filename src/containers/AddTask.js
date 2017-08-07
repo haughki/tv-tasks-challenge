@@ -19,7 +19,7 @@ let AddTask = ({ disableUi, dispatch }) => {
             newTask.value = ''
         }}>
             {' '}
-            <FormGroup controlId="formInlineEmail" style={{ width:"100%" }}>
+            <FormGroup controlId="formBasicText" style={{ width:"100%" }}>
                 {' '}
                 <FormControl style={{ backgroundColor: "MidnightBlue", color: "white", width:"100%"}}
                              disabled={disableUi} inputRef={textInput => { newTask = textInput }}

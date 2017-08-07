@@ -39,7 +39,7 @@ export class SortableTaskList extends Component {
 
     render() {
         this.state = this.props  // TODO: this works, but somehow doesn't seem right.  Am I breaking a state rule?
-        return <SortableList disableUi={this.state.disableUi} tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
+        return <SortableList distance={3} disableUi={this.state.disableUi} tasks={this.state.tasks} onSortEnd={this.onSortEnd} />;
     }
 }
 

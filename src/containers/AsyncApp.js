@@ -11,7 +11,7 @@ import AddTask from "./AddTask"
 import VisibilityButton from "./VisibilityButton"
 import { VISIBILITY } from "../common"
 import 'bootstrap/dist/css/bootstrap.css';
-
+import TaskEditModal from '../components/TaskEditModal'
 
 class AsyncApp extends Component {
     constructor(props) {
@@ -34,6 +34,7 @@ class AsyncApp extends Component {
 
         return (
             <div style={{ opacity: disableUi ? 0.5 : 1, padding: "30px" }}>
+                <TaskEditModal/>
                 <AddTask disableUi={disableUi} />
                 <ToDoTaskList />
                 <VisibilityButton />

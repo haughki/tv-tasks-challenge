@@ -3,25 +3,35 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {toggleTaskComplete, deleteTask} from "../actions"
 import '../index.css'
-import trashCan from '../img/trashCan.PNG'
+import trashCan1 from '../img/trashCan1.png'
+import edit from '../img/edit.PNG'
 
 
 let TaskPanel = ({ dispatch, childClass, disableUi, task, checked }) => (
-    <div className="panel panel-default" style={{ marginBottom: '0px' }}>
-        <div className="panel-body" style={{ padding: '5px 15px' }}>
+    <div className="panel panel-default" style={{ marginBottom: '0px' }} >
+        <div className={`panel-body ${childClass}`} style={{ padding: '5px 15px' }} onDoubleClick={ e => {
+            e.preventDefault()
+            alert("you double clicked the task -- this could launch edit modal") }}>
             <div className="checkbox" style={{ marginTop: '0px', marginBottom: '0px' }}>
-                <label className={childClass}>
-                    <input disabled={disableUi} checked={checked} readOnly type='checkbox' value="on" onClick={e => {
-                        e.preventDefault()
-                        dispatch(toggleTaskComplete(task.id, task.priority))  // TODO: should be moved into container -- mapDispatchToProps
-                    }} />
-                    {task.description}
-                </label>
-                <input style={{float:"right"}} type="image" src={trashCan} alt="delete" width="14" height="19" onClick={e => {
+                <input disabled={disableUi} checked={checked} readOnly type='checkbox' value="on" onClick={e => {
                     e.preventDefault()
-                    dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
+                    dispatch(toggleTaskComplete(task.id, task.priority))  // TODO: should be moved into container -- mapDispatchToProps
                 }} />
             </div>
+            {task.description}
+
+
+            <input style={{float:"right", paddingLeft: "10px"}} type="image" src={trashCan1} alt="delete" onClick={e => {
+                e.preventDefault()
+
+                dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
+            }} />
+
+            <input style={{float:"right", paddingRight: "10px"}} type="image" src={edit} alt="edit" onClick={e => {
+                e.preventDefault()
+                alert("You clicked edit.")
+                //dispatch(deleteTask(task.id))  // TODO: should be moved into container -- mapDispatchToProps
+            }} />
 
         </div>
     </div>
